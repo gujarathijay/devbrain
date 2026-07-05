@@ -139,8 +139,11 @@ def upsert_chunks(
         # Build a unique ID: namespace_title_chunkindex
         # e.g., "docs_cors_0", "docs_cors_1", "issues_9876_0"
         title_slug = chunk["metadata"].get("title", "unknown")
-        # Clean the title for use as an ID (remove special chars)
-        title_slug = "".join(c if c.isalnum() or c in "-_" else "_" for c in str(title_slug))
+        # Clean the title for use as an ID (remove special/non-ASCII chars;
+        # Pinecone vector IDs must be ASCII-only)
+        title_slug = "".join(
+            c if c.isascii() and (c.isalnum() or c in "-_") else "_" for c in str(title_slug)
+        )
         vector_id = f"{namespace}_{title_slug}_{chunk['metadata']['chunk_index']}"
 
         # Build metadata for Pinecone
