@@ -44,6 +44,9 @@ PINECONE_API_KEY: str = _require_env("PINECONE_API_KEY")
 # GitHub token is optional but strongly recommended (60 req/hr without, 5000 with)
 GITHUB_TOKEN: str | None = os.getenv("GITHUB_TOKEN")
 
+# Cohere — for reranking (Phase 3+). Optional until you use advanced retrieval.
+COHERE_API_KEY: str | None = os.getenv("COHERE_API_KEY")
+
 
 # ── Pinecone ──────────────────────────────────────────────────────
 PINECONE_INDEX_NAME: str = os.getenv("PINECONE_INDEX_NAME", "devbrain")
@@ -103,6 +106,7 @@ if __name__ == "__main__":
     rprint(f"  OpenAI API Key:    {OPENAI_API_KEY[:8]}...{OPENAI_API_KEY[-4:]}")
     rprint(f"  Pinecone API Key:  {PINECONE_API_KEY[:8]}...{PINECONE_API_KEY[-4:]}")
     rprint(f"  GitHub Token:      {'✅ Set' if GITHUB_TOKEN else '⚠️  Not set (60 req/hr limit)'}")
+    rprint(f"  Cohere API Key:    {'✅ Set' if COHERE_API_KEY else '⚠️  Not set (no reranking)'}")
     rprint(f"  Pinecone Index:    {PINECONE_INDEX_NAME}")
     rprint(f"  Embedding Model:   {EMBEDDING_MODEL}")
     rprint(f"  Target Repo:       {TARGET_REPO_OWNER}/{TARGET_REPO_NAME}")

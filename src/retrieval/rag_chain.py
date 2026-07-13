@@ -46,6 +46,7 @@ class RAGChain:
         top_k: int = 5,
         use_mmr: bool = True,
         temperature: float = 0.1,
+        use_hybrid: bool = False,
     ):
         """
         Initialize the RAG chain.
@@ -57,10 +58,17 @@ class RAGChain:
         - temperature: LLM randomness (0.0 = deterministic, 1.0 = creative)
           We use 0.1 for RAG because we want factual, consistent answers.
           Higher temperature = more creative but more hallucination risk.
+        - use_hybrid: if True, use HybridRetriever (dense + sparse + rerank)
+          instead of basic PineconeRetriever. Requires Cohere API key.
         """
         self.model = model
         self.temperature = temperature
-        self.retriever = PineconeRetriever(top_k=top_k, use_mmr=use_mmr)
+
+        if use_hybrid:
+            from src.retrieval.hybrid_retriever import HybridRetriever
+            self.retriever = HybridRetriever(top_k=top_k, use_reranker=True)
+        else:
+            self.retriever = PineconeRetriever(top_k=top_k, use_mmr=use_mmr)
 
     def ask(self, question: str) -> dict:
         """

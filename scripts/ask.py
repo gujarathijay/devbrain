@@ -41,11 +41,18 @@ SUGGESTIONS = [
 
 def main():
     """Run the interactive CLI."""
+    # Check for --hybrid flag
+    use_hybrid = "--hybrid" in sys.argv
+
+    mode_label = "Hybrid (Dense + BM25 + Reranking)" if use_hybrid else "Basic (Dense + MMR)"
+
     console.print(Panel(
         "[bold]🧠 DevBrain — FastAPI Developer Assistant[/bold]\n\n"
         "Ask questions about FastAPI. Answers are grounded in official\n"
         "documentation and GitHub issues, with citations.\n\n"
-        "[dim]Commands: 'quit' to exit | 'clear' to clear screen[/dim]",
+        f"[bold]Retrieval mode:[/bold] {mode_label}\n\n"
+        "[dim]Commands: 'quit' to exit | 'clear' to clear screen[/dim]\n"
+        "[dim]Run with --hybrid for advanced retrieval[/dim]",
         style="blue",
     ))
 
@@ -57,7 +64,7 @@ def main():
 
     # Initialize chain (connects to Pinecone)
     console.print("[dim]Connecting to knowledge base...[/dim]")
-    chain = RAGChain(top_k=5, use_mmr=True)
+    chain = RAGChain(top_k=5, use_mmr=True, use_hybrid=use_hybrid)
     console.print("[green]Ready![/green]\n")
 
     show_sources = True
