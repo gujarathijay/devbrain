@@ -15,7 +15,7 @@ dependencies = [
     "langchain-text-splitters>=0.3.0",  # Text chunking utilities
 
     # --- Vector Database ---
-    "pinecone>=5.0.0",          # Pinecone vector database client
+    "pinecone>=5.0.0",   # Pinecone vector database client
 
     # --- Data & Utilities ---
     "python-dotenv>=1.0.0",     # Load .env files
@@ -26,6 +26,9 @@ dependencies = [
     # --- Advanced Retrieval (Phase 3) ---
     "rank-bm25>=0.2.2",         # BM25 sparse retrieval (keyword matching)
     "cohere>=5.0.0",            # Cohere Rerank API (cross-encoder reranking)
+
+    # --- Agentic RAG (Phase 4) ---
+    "langgraph>=0.2.0",         # State machine framework for LLM agents
 ]
 
 [project.optional-dependencies]
